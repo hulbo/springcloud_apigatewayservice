@@ -35,7 +35,3 @@ Gateway Server는 클라이언트와 백엔드 서비스 간의 중간 역할을
 ## 9. QoS 관리 (Quality of Service)
 - 요청 우선순위 설정, 트래픽 제한(rate limiting), 시간 초과(timeout) 등 서비스 품질 유지.
 
----
-
-이 기능들은 마이크로서비스 아키텍처에서 Gateway Server가 필수적인 이유를 보여줍니다.
-
