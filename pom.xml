@@ -85,6 +85,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!-- 고정된 JAR 파일 이름 설정 -->
+					<finalName>apigatewayservice</finalName>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
