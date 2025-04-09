@@ -77,7 +77,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'Docker-Hub_hulbo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
                         sh """
-                            ssh -o StrictHostKeyChecking=no aws-service '
+                            ssh -o StrictHostKeyChecking=no aws-service-jenkins '
                                 echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
 
                                 if docker ps -a --format "{{.Names}}" | grep -q "^${env.IMAGE_NAME}\$"; then
