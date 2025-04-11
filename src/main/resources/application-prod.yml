@@ -5,4 +5,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://172.31.39.208:8761/eureka
+      defaultZone: http://${AWS_SERVICE_PRIVATE}:8761/eureka

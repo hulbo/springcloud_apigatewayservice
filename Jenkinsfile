@@ -51,6 +51,8 @@ pipeline {
             }
         }
 
+        echo "▶ 환경변수: AWS_SERVICE_PRIVATE: $AWS_SERVICE_PRIVATE"
+
         stage('Build with Maven') {
             steps {
                 sh 'mvn clean package -DskipTests'
@@ -87,7 +89,7 @@ pipeline {
 
                                 docker pull ${env.FULL_IMAGE_NAME}
 
-                                docker run -d --name ${env.IMAGE_NAME} -p ${env.PORT} -e SPRING_PROFILES_ACTIVE=${env.ACTIVE_PROFILE} ${env.FULL_IMAGE_NAME}
+                                docker run -d --name ${env.IMAGE_NAME} -p ${env.PORT} -e AWS_SERVICE_PRIVATE=$AWS_SERVICE_PRIVATE -e SPRING_PROFILES_ACTIVE=${env.ACTIVE_PROFILE} ${env.FULL_IMAGE_NAME}
 
                                 docker image prune -f
                             '

@@ -19,8 +19,17 @@ spring:
             preLogger: true
             postLogger: true
       routes:
+        - id: user-service
+          # uri: http://111.111.111.111:8081/
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+          filters:
+            #- AddRequestHeader=first-request, first-Request-header2
+            #- AddResponseHeader=first-request, first-Response-header2
+            - CustomFilter
         - id: first-service
-          # uri: http://43.201.25.43:8081/
+          # uri: http://111.111.111.111:8081/
           uri: lb://USER-SERVICE-FIRST
           predicates:
             - Path=/first-service/**
@@ -29,7 +38,7 @@ spring:
             #- AddResponseHeader=first-request, first-Response-header2
             - CustomFilter
         - id: second-service
-          # uri: http://localhost:8080/
+          # uri: http://111.111.111.111:8081/
           uri: lb://USER-SERVICE-SECOND
           predicates:
             - Path=/second-service/**
