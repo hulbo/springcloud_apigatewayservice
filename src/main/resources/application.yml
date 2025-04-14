@@ -28,26 +28,12 @@ spring:
             #- AddRequestHeader=first-request, first-Request-header2
             #- AddResponseHeader=first-request, first-Response-header2
             - CustomFilter
-        - id: first-service
+        - id: catalog-service
           # uri: http://111.111.111.111:8081/
-          uri: lb://USER-SERVICE-FIRST
+          uri: lb://CATALOG-SERVICE
           predicates:
-            - Path=/first-service/**
+            - Path=/catalog-service/**
           filters:
             #- AddRequestHeader=first-request, first-Request-header2
             #- AddResponseHeader=first-request, first-Response-header2
             - CustomFilter
-        - id: second-service
-          # uri: http://111.111.111.111:8081/
-          uri: lb://USER-SERVICE-SECOND
-          predicates:
-            - Path=/second-service/**
-          filters:
-            #- AddRequestHeader=second-request, second-Request-header2
-            #- AddResponseHeader=second-request, second-Response-header2
-            - CustomFilter
-            - name: CustomLoggingFilter
-              args:
-                baseMessage: Spring Cloud Gateway Custom Logging Filter
-                preLogger: true
-                postLogger: true
