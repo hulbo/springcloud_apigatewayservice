@@ -60,28 +60,40 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    def result = sh(script: "docker build -t ${env.FULL_IMAGE_NAME} .", returnStatus: true)
-                    if (result != 0) {
-                        error "▶ Docker 이미지 빌드 실패!"
-                    }
+                sh "docker build -t ${env.FULL_IMAGE_NAME} ."
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'Docker-Hub_hulbo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+                    sh "docker push ${env.FULL_IMAGE_NAME}"
                 }
             }
         }
 
         stage('Deploy to Remote Server') {
             steps {
-                script {
-                    sh """
-                        if docker ps -a --format "{{.Names}}" | grep -q "^${env.IMAGE_NAME}\$"; then
-                            docker stop ${env.IMAGE_NAME}
-                            docker rm ${env.IMAGE_NAME}
-                        fi
+                withCredentials([usernamePassword(credentialsId: 'Docker-Hub_hulbo', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    script {
+                        sh """
+                            ssh -o StrictHostKeyChecking=no aws-service-jenkins '
+                                echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
 
-                        docker run -d --name ${env.IMAGE_NAME} -p ${env.PORT} -e AWS_SERVICE_PRIVATE=$AWS_SERVICE_PRIVATE -e SPRING_PROFILES_ACTIVE=${env.ACTIVE_PROFILE} ${env.FULL_IMAGE_NAME}
+                                if docker ps -a --format "{{.Names}}" | grep -q "^${env.IMAGE_NAME}\$"; then
+                                    docker stop ${env.IMAGE_NAME}
+                                    docker rm ${env.IMAGE_NAME}
+                                fi
 
-                        docker image prune -f
-                    """
+                                docker pull ${env.FULL_IMAGE_NAME}
+
+                                docker run -d --name ${env.IMAGE_NAME} -p ${env.PORT} -e AWS_SERVICE_PRIVATE=$AWS_SERVICE_PRIVATE -e SPRING_PROFILES_ACTIVE=${env.ACTIVE_PROFILE} ${env.FULL_IMAGE_NAME}
+
+                                docker image prune -f
+                            '
+                        """
+                    }
                 }
             }
         }
