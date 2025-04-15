@@ -1,12 +1,12 @@
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: ${OCI-SERVICE-PRIVATE}
+    ip-address: ${OCI_SERVICE_PRIVATE}
     instance-id: ${spring.application.name}:${server.port}
-    status-page-url: http://${OCI-SERVICE-PRIVATE}:${server.port}/info
-    health-check-url: http://${OCI-SERVICE-PRIVATE}:${server.port}/healthCheck
+    status-page-url: http://${OCI_SERVICE_PRIVATE}:${server.port}/info
+    health-check-url: http://${OCI_SERVICE_PRIVATE}:${server.port}/healthCheck
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://${OCI-SERVICE-PRIVATE}:8761/eureka
+      defaultZone: http://${OCI_SERVICE_PRIVATE}:8761/eureka
