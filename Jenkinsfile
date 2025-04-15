@@ -47,7 +47,7 @@ pipeline {
                     echo "▶ 적용된 Spring Profile: ${env.ACTIVE_PROFILE}"
                     echo "▶ Docker 이미지 태그: ${env.IMAGE_TAG}"
                     echo "▶ Docker 전체 이미지 명: ${env.FULL_IMAGE_NAME}"
-                    echo "▶ 환경변수: AWS_SERVICE_PRIVATE: $AWS_SERVICE_PRIVATE"
+                    echo "▶ 환경변수: OCI-SERVICE-PRIVATE: $OCI-SERVICE-PRIVATE"
                 }
             }
         }
@@ -78,7 +78,7 @@ pipeline {
                             docker rm ${env.IMAGE_NAME}
                         fi
 
-                        docker run -d --name ${env.IMAGE_NAME} -p ${env.PORT} -e AWS_SERVICE_PRIVATE=$AWS_SERVICE_PRIVATE -e SPRING_PROFILES_ACTIVE=${env.ACTIVE_PROFILE} ${env.FULL_IMAGE_NAME}
+                        docker run -d --name ${env.IMAGE_NAME} -p ${env.PORT} -e OCI-SERVICE-PRIVATE=$OCI-SERVICE-PRIVATE -e SPRING_PROFILES_ACTIVE=${env.ACTIVE_PROFILE} ${env.FULL_IMAGE_NAME}
 
                         docker image prune -f
                     """
