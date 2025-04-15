@@ -5,4 +5,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://aws-service:8761/eureka
+      defaultZone: http://oci-service:8761/eureka
